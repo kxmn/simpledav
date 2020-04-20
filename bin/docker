@@ -1,0 +1,40 @@
+#!/bin/bash
+set -x
+PROJPATH=$(realpath $(dirname $0)'/..')
+PROJNAME=simpledav
+HOSTNAME=$(hostname)
+CONFFILE=${PROJPATH}/etc/conf
+#
+# Webserver
+#
+function @build {
+	docker build -t ${PROJNAME}:latest -f bin/dockerfile .;
+}
+
+function @run {
+	local publicIP=`hostname -I | cut -d' ' -f1`
+	local userid=$(cat ${CONFFILE}|grep userid|cut -d= -f2);
+
+	docker run --name ${PROJNAME} \
+	-p ${publicIP}:7777:7777 \
+	--mount type=bind,source=$PROJPATH/bin/docker-entrypoint,target=/root/entrypoint \
+	--mount type=bind,source=$PROJPATH/etc/nginx/nginx.conf,target=/etc/nginx/nginx.conf \
+	--mount type=bind,source=$PROJPATH/etc/nginx/sites-enabled,target=/etc/nginx/sites-enabled \
+	--mount type=bind,source=$PROJPATH/etc/nginx/pwd,target=/etc/nginx/pwd \
+	$(for i in $(cat ${PROJPATH}/etc/conf|grep 'mount='|cut -d= -f2-) ; do echo -n "--mount type=bind,source="$(echo $i|sed 's/:/,target=/g')' '; done) \
+	$PROJNAME $userid &
+}
+
+function @enter {
+	docker exec -ti ${PROJNAME} bash
+}
+
+# Ex: script.sh foo -> @foo()
+function run {
+	local run=@$1; shift;
+	[[ `type -t $run` != 'function'  ]] \
+	  && declare -F | grep 'declare -f @' | cut -d@ -f2 \
+	  || $run $@;
+}
+
+run $@

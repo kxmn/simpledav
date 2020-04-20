@@ -1,0 +1,7 @@
+	FROM debian:latest
+EXPOSE 7777/tcp
+COPY --chown=root:root bin/docker-build /root/build
+COPY --chown=root:root bin/docker-entrypoint /root/entrypoint
+
+RUN ["/bin/bash", "/root/build" ]
+ENTRYPOINT [ "/bin/bash", "/root/entrypoint" ]

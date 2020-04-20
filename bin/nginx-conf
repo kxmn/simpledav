@@ -1,0 +1,15 @@
+#!/bin/bash
+name=$1;
+conf=$(realpath $(dirname $0)'/../etc/nginx/)'${name}'.conf' 
+
+echo 'server {
+	listen 7777; listen [::]:7777;
+	server_name '${name}'.thadeu.me;
+	auth_basic realm_name; auth_basic_user_file /etc/nginx/pwd/'${name}'.list;
+	dav_methods PUT DELETE MKCOL COPY MOVE; dav_ext_methods PROPFIND OPTIONS;
+	dav_access user:rw group:rw all:r;
+	client_body_temp_path /tmp/nginx/client-bodies; client_max_body_size 0;
+	create_full_put_path on;
+	root /dav/'$name';
+}' > $conf
+

@@ -1,0 +1,3 @@
+userid=1000
+mount=/home/thadeu/Documentos/OrgMode:/dav/org-mode
+mount=/home/thadeu/Dropbox/Notas:/dav/notas
