@@ -1,6 +1,0 @@
-#!/bin/bash
-user=$2
-conf=$(realpath $(dirname $0)/../etc/nginx/pwd/)/$1.list
-
-echo -n ${user}':' | tee $conf
-openssl passwd -apr1 | tee -a $conf
