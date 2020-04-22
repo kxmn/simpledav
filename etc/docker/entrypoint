@@ -1,10 +1,12 @@
 #!/bin/bash
 user=$1;
 if [[ "$user" == "" ]] ;then user=33; fi
-
+rm -rf /run/radicale/radicale.pid
 mkdir -p /tmp/nginx
 userdel simpledav;
 rm -rf /home/simpledav
 useradd simpledav -u$user -o
+chmod -R a+rw /srv/caldav
+/etc/init.d/radicale restart
 /etc/init.d/nginx restart
 while : ; do sleep 3600; done

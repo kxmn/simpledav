@@ -17,10 +17,12 @@ function @run {
 
 	docker run --name ${PROJNAME} \
 	-p ${publicIP}:7777:7777 \
+	-p ${publicIP}:7778:7778 \
 	--mount type=bind,source=$PROJPATH/etc/docker/entrypoint,target=/root/entrypoint \
 	--mount type=bind,source=$PROJPATH/etc/nginx/nginx.conf,target=/etc/nginx/nginx.conf \
 	--mount type=bind,source=$PROJPATH/etc/nginx/sites-enabled,target=/etc/nginx/sites-enabled \
 	--mount type=bind,source=$PROJPATH/etc/nginx/pwd,target=/etc/nginx/pwd \
+	--mount type=bind,source=$PROJPATH/etc/radicale/config,target=/etc/radicale/config \
 	$(for i in $(cat ${PROJPATH}/etc/conf|grep 'mount='|cut -d= -f2-) ; do echo -n "--mount type=bind,source="$(echo $i|sed 's/:/,target=/g')' '; done) \
 	$PROJNAME $userid &
 }
