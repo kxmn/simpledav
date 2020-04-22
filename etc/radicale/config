@@ -1,0 +1,26 @@
+[server]
+hosts = 127.0.0.1:8878
+pid = /run/radicale.pid
+
+ssl = False
+
+# This needs to change if served from a subdirectory instead of a
+# subdomain
+# base_prefix = /
+
+[encoding]
+request = utf-8
+stock = utf-8
+
+[auth]
+type = none
+
+[rights]
+type = none
+
+[storage]
+type = multifilesystem
+filesystem_folder = /srv/caldav
+
+[headers]
+Access-Control-Allow-Origin = *
