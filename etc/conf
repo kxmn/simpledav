@@ -1,3 +1,2 @@
 userid=1000
-mount=/home/thadeu/Documentos/WebDav:/srv/webdav
-mount=/home/thadeu/Documentos/CalDav:/srv/caldav
+mount=/home/thadeu/Documentos:/srv/webdav
