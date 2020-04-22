@@ -1,5 +1,5 @@
 #!/bin/bash
 apt-get -y update;
-apt-get -y install nginx-full radicale;
+apt-get -y install nginx-full;
 
 mkdir /srv/webdav /srv/caldav
